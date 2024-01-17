@@ -1,6 +1,8 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
 import {INTEGER} from "sequelize";
 import {ApiProperty} from "@nestjs/swagger";
+import {Roles} from "../roles/roles.model";
+import {UserRoles} from "../roles/user-roles.model";
 
 interface UserCreationAttrs {
     email: string,
@@ -28,4 +30,7 @@ export class User extends Model<User, UserCreationAttrs>{
     @ApiProperty({example: 'Спам и оскорбления', description: 'Причина бана'})
     @Column({type: DataType.STRING, allowNull: true})
     banReason: string;
+
+    @BelongsToMany(() => Roles, ()=> UserRoles)
+    roles: Roles[];
 }
